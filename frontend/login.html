@@ -1,0 +1,30 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login | Mini Shop </title>
+    <link rel="stylesheet" href="/static/css/admin.css">
+</head>
+<body>
+    <main class="login-layout">
+        <section class="login-panel">
+            <h1>Admin Login</h1>
+            <p class="muted">Mini Shop</p>
+            <form id="login-form" class="form-stack">
+                <label>
+                    Username
+                    <input id="username" name="username" autocomplete="username" required>
+                </label>
+                <label>
+                    Password
+                    <input id="password" name="password" type="password" autocomplete="current-password" required>
+                </label>
+                <button id="login-button" type="submit">Login</button>
+                <div id="message" class="message"></div>
+            </form>
+        </section>
+    </main>
+    <script src="/static/js/login.js"></script>
+</body>
+</html>
