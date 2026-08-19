@@ -1,0 +1,5 @@
+project-includes = ["app/**/*.py", "tests/**/*.py"]
+project-excludes = ["**/__pycache__", "venv/**"]
+search-path = ["."]
+python-interpreter-path = "venv/Scripts/python.exe"
+site-package-path = ["venv/Lib/site-packages"]
