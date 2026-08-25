@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin Orders | Mini Shop</title>
+    <link rel="stylesheet" href="/static/css/admin.css">
+</head>
+<body data-admin-page="orders">
+    <div class="admin-shell">
+        <aside class="admin-sidebar"><a class="brand" href="/admin/dashboard">Mini Shop Admin</a><nav id="admin-nav" class="admin-nav"></nav></aside>
+        <div class="admin-main">
+            <header class="admin-topbar"><div id="admin-name" class="muted"></div><button id="logout-top" class="secondary" type="button">Logout</button></header>
+            <main class="content">
+                <h1>Orders</h1>
+                <section class="table-panel padded-panel empty-state"><h2>No orders have been created yet.</h2><p class="muted">Order management will become available when checkout is implemented.</p></section>
+                <div id="page-message" class="message"></div>
+            </main>
+        </div>
+    </div>
+    <script src="/static/js/admin.js"></script>
+</body>
+</html>

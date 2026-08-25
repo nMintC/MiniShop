@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Customers | Mini Shop Admin</title>
+    <link rel="stylesheet" href="/static/css/admin.css">
+</head>
+<body data-admin-page="customers">
+    <div class="admin-shell">
+        <aside class="admin-sidebar"><a class="brand" href="/admin/dashboard">Mini Shop Admin</a><nav id="admin-nav" class="admin-nav"></nav></aside>
+        <div class="admin-main">
+            <header class="admin-topbar"><div id="admin-name" class="muted"></div></header>
+            <main class="content">
+                <div class="header-row section-header"><div><h1>Customers</h1><div id="summary" class="muted"></div></div></div>
+                <section class="toolbar" aria-label="Customer tools"><input id="search-input" placeholder="Search customer username or email" autocomplete="off" maxlength="150"><button id="search-button" class="secondary" type="button">Search</button></section>
+                <section class="table-panel"><div class="table-wrap"><table><thead><tr><th>ID</th><th>Username</th><th>Email</th><th>Status</th><th>Registered</th><th>Orders</th><th>Actions</th></tr></thead><tbody id="customer-rows"></tbody></table></div><div class="pagination"><button id="prev-page" class="secondary" type="button">Previous</button><span id="page-info" class="muted"></span><button id="next-page" class="secondary" type="button">Next</button></div></section>
+                <div id="page-message" class="message"></div>
+            </main>
+        </div>
+    </div>
+    <div id="customer-dialog-backdrop" class="dialog-backdrop"><section class="dialog" role="dialog" aria-modal="true" aria-labelledby="customer-dialog-title"><h1 id="customer-dialog-title">Customer Details</h1><div id="customer-detail" class="detail-copy"></div><div id="customer-message" class="message"></div><div class="form-actions"><button id="customer-close-button" class="secondary" type="button">Close</button><button id="customer-status-button" class="danger" type="button">Disable Account</button></div></section></div>
+    <script src="/static/js/admin.js"></script>
+</body>
+</html>

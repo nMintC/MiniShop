@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin Dashboard | Mini Shop</title>
+    <link rel="stylesheet" href="/static/css/admin.css">
+</head>
+<body data-admin-page="dashboard">
+    <div class="admin-shell">
+        <aside class="admin-sidebar">
+            <a class="brand" href="/admin/dashboard">Mini Shop Admin</a>
+            <nav id="admin-nav" class="admin-nav"></nav>
+        </aside>
+        <div class="admin-main">
+            <header class="admin-topbar"><div id="admin-name" class="muted"></div></header>
+            <main class="content">
+                <h1>Dashboard</h1>
+                <section class="welcome-panel">
+                    <div>
+                        <div class="muted">Welcome back, <span id="welcome-name">Admin</span></div>
+                        <h2>Mini Shop Administration</h2>
+                    </div>
+                    <div class="shop-status">Shop Status <span id="shop-status-dot"></span><strong id="shop-status">Online</strong></div>
+                </section>
+                <section class="stats-grid four-cols">
+                    <article class="stat-card"><div class="muted">Total Revenue</div><div id="total-revenue" class="stat-value">$0</div></article>
+                    <article class="stat-card"><div class="muted">Total Products</div><div id="total-products" class="stat-value">0</div></article>
+                    <article class="stat-card"><div class="muted">Total Orders</div><div id="total-orders" class="stat-value">0</div></article>
+                    <article class="stat-card"><div class="muted">Total Customers</div><div id="total-customers" class="stat-value">0</div></article>
+                </section>
+                <section class="table-panel padded-panel products-section">
+                    <div class="header-row"><h2>Recent Orders</h2><a class="secondary-link button-link" href="/admin/orders">View All</a></div>
+                    <div id="recent-orders" class="muted">No orders yet.</div>
+                </section>
+                <div id="page-message" class="message"></div>
+            </main>
+        </div>
+    </div>
+    <script src="/static/js/admin.js"></script>
+</body>
+</html>
