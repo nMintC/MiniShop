@@ -18,3 +18,4 @@ test_app.db
 
 # Locust benchmark output
 performance_locust*.csv
+app/static/uploads/
