@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Profile | Mini Shop</title>
+    <link rel="stylesheet" href="/static/css/admin.css">
+</head>
+<body data-page="profile">
+    <div class="page-shell store-shell">
+        <header class="store-header">
+            <div class="store-header-inner">
+                <a class="brand" href="/">Mini Shop</a>
+                <form id="global-search" class="store-search">
+                    <input id="global-search-input" placeholder="Search products" autocomplete="off" maxlength="150">
+                </form>
+                <nav id="main-nav" class="nav"></nav>
+            </div>
+        </header>
+        <main class="content narrow-content">
+            <h1>Profile</h1>
+            <section class="profile-sections">
+                <form id="profile-form" class="form-stack table-panel padded-panel">
+                    <div>
+                        <h2>Account Information</h2>
+                        <div class="muted">Manage your customer account details.</div>
+                    </div>
+                    <label>Username <input id="username" name="username" required minlength="3" maxlength="80"></label>
+                    <label>Email <input id="email" name="email" type="email" maxlength="255" readonly></label>
+                    <button id="profile-button" type="submit">Save Changes</button>
+                    <div id="message" class="message"></div>
+                </form>
+                <section class="table-panel padded-panel form-stack">
+                    <div>
+                        <h2>Security</h2>
+                        <div class="muted">Update your password when needed.</div>
+                    </div>
+                    <button id="open-password-button" class="secondary" type="button">Change Password</button>
+                    <div id="security-message" class="message"></div>
+                </section>
+            </section>
+        </main>
+        <footer class="store-footer">Mini Shop - Account profile</footer>
+    </div>
+    <div id="password-dialog-backdrop" class="dialog-backdrop">
+        <section class="dialog" role="dialog" aria-modal="true" aria-labelledby="password-dialog-title">
+            <h1 id="password-dialog-title">Change Password</h1>
+            <form id="password-form" class="form-stack">
+                <label>Current Password <input id="current-password" name="current_password" type="password" autocomplete="current-password" maxlength="128" required></label>
+                <label>New Password <input id="new-password" name="new_password" type="password" autocomplete="new-password" minlength="8" maxlength="128" required></label>
+                <label>Confirm New Password <input id="confirm-password" name="confirm_password" type="password" autocomplete="new-password" minlength="8" maxlength="128" required></label>
+                <div id="password-message" class="message"></div>
+                <div class="form-actions">
+                    <button id="cancel-password-button" class="secondary" type="button">Cancel</button>
+                    <button id="change-password-button" type="submit">Change</button>
+                </div>
+            </form>
+        </section>
+    </div>
+    <script src="/static/js/shop.js"></script>
+</body>
+</html>
