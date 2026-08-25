@@ -7,24 +7,19 @@ async function login(event) {
     button.disabled = true;
     message.textContent = "";
 
-    const payload = {
-        username: form.username.value.trim(),
-        password: form.password.value,
-    };
-
     try {
         const response = await fetch("/api/auth/login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload),
+            body: JSON.stringify({ username: form.username.value.trim(), password: form.password.value }),
         });
 
+        const data = await response.json().catch(() => ({}));
         if (!response.ok) {
-            const data = await response.json().catch(() => ({}));
             throw new Error(data.detail || "Login failed");
         }
 
-        window.location.href = "/dashboard";
+        window.location.href = data.user.role === "admin" ? "/admin/dashboard" : "/";
     } catch (error) {
         message.textContent = error.message;
     } finally {

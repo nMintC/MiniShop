@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Register | Mini Shop</title>
+    <link rel="stylesheet" href="/static/css/admin.css">
+</head>
+<body data-page="register">
+    <main class="login-layout">
+        <section class="login-panel">
+            <h1>Register</h1>
+            <form id="register-form" class="form-stack">
+                <label>Username <input id="username" name="username" autocomplete="username" required minlength="3" maxlength="80"></label>
+                <label>Email <input id="email" name="email" type="email" autocomplete="email" required maxlength="255"></label>
+                <label>Password <input id="password" name="password" type="password" autocomplete="new-password" required minlength="8" maxlength="128"></label>
+                <button id="register-button" type="submit">Register</button>
+                <div id="message" class="message"></div>
+                <a class="muted" href="/login">Already have an account? Login</a>
+            </form>
+        </section>
+    </main>
+    <script src="/static/js/shop.js"></script>
+</body>
+</html>
