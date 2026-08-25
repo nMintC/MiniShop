@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 from math import ceil
 
@@ -99,3 +99,17 @@ def count_products(db: Session) -> int:
 
 def count_total_quantity(db: Session) -> int:
     return db.scalar(select(func.coalesce(func.sum(Product.quantity), 0))) or 0
+
+def count_low_stock_products(db: Session, threshold: int = 5) -> int:
+    return db.scalar(select(func.count(Product.id)).where(Product.quantity <= threshold)) or 0
+
+def update_product_image(db: Session, product_id: int, image_url: str) -> Product:
+    product = get_product(db, product_id)
+    product.image_url = image_url
+    try:
+        db.commit()
+        db.refresh(product)
+        return product
+    except Exception:
+        db.rollback()
+        raise
