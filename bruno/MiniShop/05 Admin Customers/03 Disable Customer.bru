@@ -1,0 +1,21 @@
+meta {
+  name: Disable Customer
+  type: http
+  seq: 3
+}
+
+patch {
+  url: {{baseUrl}}/api/admin/customers/{{customerId}}
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "is_active": false
+  }
+}

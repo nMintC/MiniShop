@@ -1,0 +1,25 @@
+meta {
+  name: Update Product
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{baseUrl}}/api/admin/products/{{productId}}
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "name": "Updated Denim Shirt",
+    "description": "Updated from Bruno.",
+    "sku": "CLOTH-001",
+    "price": "25.00",
+    "quantity": 30
+  }
+}

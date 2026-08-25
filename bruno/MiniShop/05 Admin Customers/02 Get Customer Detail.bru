@@ -1,0 +1,11 @@
+meta {
+  name: Get Customer Detail
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/admin/customers/{{customerId}}
+  body: none
+  auth: none
+}

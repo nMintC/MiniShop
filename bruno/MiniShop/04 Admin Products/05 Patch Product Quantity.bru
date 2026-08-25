@@ -1,0 +1,21 @@
+meta {
+  name: Patch Product Quantity
+  type: http
+  seq: 5
+}
+
+patch {
+  url: {{baseUrl}}/api/admin/products/{{productId}}
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "quantity": 15
+  }
+}

@@ -1,0 +1,11 @@
+meta {
+  name: Get Admin Product Detail
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/admin/products/{{productId}}
+  body: none
+  auth: none
+}

@@ -1,0 +1,25 @@
+meta {
+  name: Create Product
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/api/admin/products
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "name": "Bruno Denim Shirt",
+    "description": "Created from Bruno API collection.",
+    "sku": "BRUNO-SHIRT-001",
+    "price": "37.00",
+    "quantity": 20
+  }
+}

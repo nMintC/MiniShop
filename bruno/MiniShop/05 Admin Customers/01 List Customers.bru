@@ -1,0 +1,11 @@
+meta {
+  name: List Customers
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/admin/customers?page=1&page_size=10
+  body: none
+  auth: none
+}

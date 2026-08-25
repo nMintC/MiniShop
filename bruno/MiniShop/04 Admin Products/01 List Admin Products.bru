@@ -1,0 +1,11 @@
+meta {
+  name: List Admin Products
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/admin/products?page=1&page_size=10
+  body: none
+  auth: none
+}

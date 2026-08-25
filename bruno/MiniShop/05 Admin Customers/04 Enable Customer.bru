@@ -1,0 +1,21 @@
+meta {
+  name: Enable Customer
+  type: http
+  seq: 4
+}
+
+patch {
+  url: {{baseUrl}}/api/admin/customers/{{customerId}}
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "is_active": true
+  }
+}

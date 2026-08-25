@@ -1,0 +1,11 @@
+meta {
+  name: Get Public Product Detail
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/products/{{productId}}
+  body: none
+  auth: none
+}

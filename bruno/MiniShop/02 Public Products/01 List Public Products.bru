@@ -1,0 +1,11 @@
+meta {
+  name: List Public Products
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/products?page=1&page_size=10
+  body: none
+  auth: none
+}
