@@ -61,7 +61,7 @@ class AdminUser(HttpUser):
 
     @task(8)
     def dashboard_stats(self) -> None:
-        with self.client.get("/api/dashboard", name="GET /api/dashboard", catch_response=True) as response:
+        with self.client.get("/api/admin/dashboard", name="GET /api/admin/dashboard", catch_response=True) as response:
             if response.status_code != 200:
                 response.failure(f"Dashboard failed: {response.status_code} {response.text[:120]}")
 
@@ -110,9 +110,9 @@ class AdminUser(HttpUser):
         }
 
         with self.client.post(
-            "/api/products",
+            "/api/admin/products",
             json=payload,
-            name="POST /api/products",
+            name="POST /api/admin/products",
             catch_response=True,
         ) as create_response:
             if create_response.status_code != 201:
@@ -128,9 +128,9 @@ class AdminUser(HttpUser):
 
         update_payload = {"quantity": random.randint(1, 50)}
         with self.client.patch(
-            f"/api/products/{product_id}",
+            f"/api/admin/products/{product_id}",
             json=update_payload,
-            name="PATCH /api/products/{id}",
+            name="PATCH /api/admin/products/{id}",
             catch_response=True,
         ) as update_response:
             if update_response.status_code != 200:
@@ -139,8 +139,8 @@ class AdminUser(HttpUser):
                 )
 
         with self.client.delete(
-            f"/api/products/{product_id}",
-            name="DELETE /api/products/{id}",
+            f"/api/admin/products/{product_id}",
+            name="DELETE /api/admin/products/{id}",
             catch_response=True,
         ) as delete_response:
             if delete_response.status_code != 204:
