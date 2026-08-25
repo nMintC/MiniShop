@@ -3,112 +3,42 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Dashboard | Mini Shop</title>
+    <title>Mini Shop</title>
     <link rel="stylesheet" href="/static/css/admin.css">
 </head>
-<body>
-    <div class="page-shell">
-        <header class="topbar">
-            <div class="brand">Mini Shop</div>
-            <nav class="nav">
-                <a class="active" href="/dashboard">Dashboard</a>
-                <button id="logout-button" class="secondary" type="button">Logout</button>
-            </nav>
+<body data-page="home">
+    <div class="page-shell store-shell">
+        <header class="store-header">
+            <div class="store-header-inner">
+                <a class="brand" href="/">Mini Shop</a>
+                <form id="global-search" class="store-search">
+                    <input id="global-search-input" placeholder="Search products" autocomplete="off" maxlength="150">
+                </form>
+                <nav id="main-nav" class="nav"></nav>
+            </div>
         </header>
         <main class="content">
-            <div class="header-row">
+            <section class="store-hero">
                 <div>
-                    <h1>Dashboard</h1>
-                    <div id="admin-name" class="muted"></div>
+                    <h1>Welcome to Mini Shop</h1>
+                    <p>Browse simple and useful products for everyday work and life.</p>
+                    <a class="button-link" href="/products">Browse Products</a>
                 </div>
-            </div>
-
-            <section class="stats-grid">
-                <article class="stat-card">
-                    <div class="muted">Total Products</div>
-                    <div id="total-products" class="stat-value">0</div>
-                </article>
-                <article class="stat-card">
-                    <div class="muted">Total Quantity</div>
-                    <div id="total-quantity" class="stat-value">0</div>
-                </article>
             </section>
-
-            <section class="products-section" aria-labelledby="products-title">
+            <section class="products-section">
                 <div class="header-row section-header">
                     <div>
-                        <h2 id="products-title">Products</h2>
-                        <div id="summary" class="muted"></div>
+                        <h2>Latest Products</h2>
+                        <div class="muted">A quick look at what is new in the catalog.</div>
                     </div>
-                    <button id="add-button" type="button">Add Product</button>
+                    <a class="button-link secondary-link" href="/products">View Catalog</a>
                 </div>
-
-                <section class="toolbar" aria-label="Product tools">
-                    <input id="search-input" placeholder="Search name or SKU" autocomplete="off">
-                    <button id="search-button" class="secondary" type="button">Search</button>
-                </section>
-
-                <section class="table-panel">
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th>SKU</th>
-                                    <th>Price</th>
-                                    <th>Quantity</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="product-rows"></tbody>
-                        </table>
-                    </div>
-                    <div class="pagination">
-                        <button id="prev-page" class="secondary" type="button">Previous</button>
-                        <span id="page-info" class="muted"></span>
-                        <button id="next-page" class="secondary" type="button">Next</button>
-                    </div>
-                </section>
+                <div id="page-message" class="message"></div>
+                <div id="home-products" class="card-grid"></div>
             </section>
         </main>
+        <footer class="store-footer">Mini Shop - Customer storefront</footer>
     </div>
-
-    <div id="dialog-backdrop" class="dialog-backdrop">
-        <section class="dialog" role="dialog" aria-modal="true" aria-labelledby="dialog-title">
-            <h1 id="dialog-title">Product</h1>
-            <form id="product-form" class="form-stack">
-                <div class="form-grid">
-                    <label>
-                        Name
-                        <input id="name" name="name" maxlength="150" required>
-                    </label>
-                    <label>
-                        SKU
-                        <input id="sku" name="sku" maxlength="50" required>
-                    </label>
-                    <label>
-                        Price
-                        <input id="price" name="price" type="number" min="0" step="0.01" required>
-                    </label>
-                    <label>
-                        Quantity
-                        <input id="quantity" name="quantity" type="number" min="0" step="1" required>
-                    </label>
-                    <label class="full">
-                        Description
-                        <textarea id="description" name="description"></textarea>
-                    </label>
-                </div>
-                <div id="form-message" class="message"></div>
-                <div class="form-actions">
-                    <button id="cancel-button" class="secondary" type="button">Cancel</button>
-                    <button id="save-button" type="submit">Save</button>
-                </div>
-            </form>
-        </section>
-    </div>
-
-    <script src="/static/js/dashboard.js"></script>
+    <script src="/static/js/shop.js"></script>
 </body>
 </html>

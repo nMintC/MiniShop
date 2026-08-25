@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Products | Mini Shop</title>
+    <link rel="stylesheet" href="/static/css/admin.css">
+</head>
+<body data-page="products">
+    <div class="page-shell store-shell">
+        <header class="store-header">
+            <div class="store-header-inner">
+                <a class="brand" href="/">Mini Shop</a>
+                <form id="global-search" class="store-search">
+                    <input id="global-search-input" placeholder="Search products" autocomplete="off" maxlength="150">
+                </form>
+                <nav id="main-nav" class="nav"></nav>
+            </div>
+        </header>
+        <main class="content">
+            <div class="header-row">
+                <div>
+                    <h1>Products</h1>
+                    <div id="summary" class="muted"></div>
+                </div>
+            </div>
+            <section class="toolbar" aria-label="Product search">
+                <input id="search-input" placeholder="Search products" autocomplete="off" maxlength="150">
+                <button id="clear-search-button" class="secondary" type="button">Clear</button>
+            </section>
+            <div id="page-message" class="message"></div>
+            <section class="table-panel">
+                <div id="product-list" class="card-grid product-cards"></div>
+                <div class="pagination">
+                    <button id="prev-page" class="secondary" type="button">Previous</button>
+                    <span id="page-info" class="muted"></span>
+                    <button id="next-page" class="secondary" type="button">Next</button>
+                </div>
+            </section>
+        </main>
+        <footer class="store-footer">Mini Shop - Browse products without internal catalog data</footer>
+    </div>
+    <script src="/static/js/shop.js"></script>
+</body>
+</html>
