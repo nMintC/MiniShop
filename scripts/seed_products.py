@@ -10,7 +10,7 @@ sys.path.insert(0, str(ROOT_DIR))
 
 from sqlalchemy import func, select
 
-from app.config import ADMIN_PASSWORD, ADMIN_USERNAME
+from app.config import ADMIN_EMAIL, ADMIN_PASSWORD, ADMIN_USERNAME
 from app.database import SessionLocal, init_db
 from app.models.product import Product
 from app.services.auth_service import seed_default_admin
@@ -28,7 +28,7 @@ def seed_products(count: int, prefix: str, batch_size: int) -> int:
     created = 0
 
     with SessionLocal() as db:
-        seed_default_admin(db, ADMIN_USERNAME, ADMIN_PASSWORD)
+        seed_default_admin(db, ADMIN_USERNAME, ADMIN_PASSWORD, ADMIN_EMAIL)
 
         index = 1
         while created < count:
