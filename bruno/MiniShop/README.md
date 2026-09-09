@@ -28,3 +28,15 @@ password: Admin123!
 ## Variables
 
 Edit `environments/local.bru` if your server port or test IDs are different.
+## Redis Cache Checks
+
+Use `02 Public Products / Get Public Product Detail` and check the response headers:
+
+```text
+X-Cache: MISS
+X-Cache: HIT
+X-Cache: BYPASS
+X-Cache: ERROR
+```
+
+Use `06 Health / Redis Health` to confirm whether Redis is `ok`, `down`, or `disabled`.
