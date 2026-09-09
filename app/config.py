@@ -29,6 +29,13 @@ def env_int(name: str, default: int) -> int:
         return default
 
 
+def env_bool(name: str, default: bool) -> bool:
+    raw_value = os.getenv(name)
+    if raw_value is None:
+        return default
+    return raw_value.strip().lower() in {"1", "true", "yes", "on"}
+
+
 load_env_file()
 
 DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./app.db")
@@ -45,3 +52,6 @@ ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "Admin123!")
 DEV_USER_USERNAME = os.getenv("DEV_USER_USERNAME", "user")
 DEV_USER_EMAIL = os.getenv("DEV_USER_EMAIL", "user@minishop.local")
 DEV_USER_PASSWORD = os.getenv("DEV_USER_PASSWORD", "User123!")
+REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379/0")
+REDIS_CACHE_TTL = env_int("REDIS_CACHE_TTL", 120)
+REDIS_ENABLED = env_bool("REDIS_ENABLED", True)
