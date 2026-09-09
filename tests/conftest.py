@@ -3,6 +3,7 @@ from decimal import Decimal
 from pathlib import Path
 
 import pytest
+from redis.exceptions import RedisError
 from fastapi.testclient import TestClient
 
 TEST_DB = Path(__file__).resolve().parent / "test_app.db"
@@ -16,6 +17,7 @@ os.environ["ADMIN_PASSWORD"] = "Admin123!"
 os.environ["DEV_USER_USERNAME"] = "user"
 os.environ["DEV_USER_EMAIL"] = "user@minishop.local"
 os.environ["DEV_USER_PASSWORD"] = "User123!"
+os.environ["REDIS_ENABLED"] = "true"
 
 from app.database import Base, SessionLocal, engine  # noqa: E402
 from app.main import app  # noqa: E402
@@ -104,3 +106,26 @@ def create_inactive_user(username: str = "inactive", email: str = "inactive@exam
             )
         )
         db.commit()
+class OfflineRedis:
+    def ping(self):
+        raise RedisError("Redis disabled during tests")
+
+    def get(self, key: str):
+        raise RedisError("Redis disabled during tests")
+
+    def set(self, key: str, value: str, *, ex: int):
+        raise RedisError("Redis disabled during tests")
+
+    def delete(self, *keys: str):
+        return 0
+
+    def scan_iter(self, match: str):
+        return iter(())
+
+
+@pytest.fixture(autouse=True)
+def disable_real_redis(monkeypatch):
+    import app.cache as cache
+
+    monkeypatch.setattr(cache, "_client", OfflineRedis())
+

@@ -14,6 +14,7 @@ def test_openapi_json_available(client):
     assert "/api/admin/users" in paths
     assert "/api/admin/customers" in paths
     assert "/api/admin/orders" in paths
+    assert "/api/health" in paths
     assert "/api/auth/register" in paths
     assert "/api/auth/login" in paths
 
