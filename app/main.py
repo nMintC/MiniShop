@@ -15,7 +15,7 @@ from app.config import (
 )
 from app.database import SessionLocal, engine, init_db
 from app.models.user import ADMIN_ROLE, USER_ROLE, User
-from app.routers import auth, dashboard, orders, products, users
+from app.routers import auth, dashboard, health, orders, products, users
 from app.services.auth_service import seed_default_admin, verify_session_token
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -44,6 +44,7 @@ app.include_router(users.admin_router, prefix="/api")
 app.include_router(users.customer_router, prefix="/api")
 app.include_router(dashboard.router, prefix="/api")
 app.include_router(orders.router, prefix="/api")
+app.include_router(health.router, prefix="/api")
 app.include_router(dashboard.legacy_router, prefix="/api")
 app.include_router(products.public_router, prefix="/api")
 app.include_router(products.admin_router, prefix="/api")
