@@ -398,6 +398,176 @@ Full regression test:
 ```powershell
 python -m pytest -v
 ```
+## Locust Cache Benchmark Scenarios
+
+The project now keeps the original mixed workload in `locustfile.py` and adds focused Redis/cache benchmark files. Use these benchmarks for comparison only; do not treat local numbers as production capacity.
+
+### Current Locust Files
+
+- `locustfile.py`: mixed admin workload. It logs in as admin, reads dashboard stats, lists/searches public products, opens public product detail pages, and occasionally creates/updates/deletes a temporary product. This is useful as a broad smoke/load flow, but it mixes reads and writes, so it is not ideal for isolating Redis cache behavior.
+- `locust_redis.py`: Scenario A, single hot key. Many users request one product detail endpoint, default `GET /api/products/3`. Configure with `BENCHMARK_PRODUCT_ID`.
+- `locust_redis_multi.py`: Scenario B, multiple hot products. Users request several product detail keys, default `1,2,3,4,5`. Configure with `BENCHMARK_PRODUCT_IDS`, `BENCHMARK_PRODUCT_WEIGHTS`, and `BENCHMARK_DISTRIBUTION`.
+- `locust_user_journey.py`: Scenario C, realistic customer read journey. It logs in once, browses product lists, opens random details, searches, and checks profile. It avoids repeated register/change-password/write operations.
+- `locust_cache_stampede.py`: focused cold-key burst benchmark. It is meant to create many simultaneous cache misses for multiple product keys.
+
+### Scenario A - Single Hot Key
+
+Use this to test one very hot product cache key:
+
+```powershell
+$env:BENCHMARK_PRODUCT_ID='3'
+locust -f locust_redis.py --host http://127.0.0.1:8000
+```
+
+Best for:
+
+- hot key latency
+- warm cache HIT behavior
+- cold MISS burst behavior
+- p95/p99 response time for one product key
+- checking that request names stay grouped as `GET /api/products/[id] hot-key`
+
+### Scenario B - Multiple Hot Products
+
+Use this to verify different product cache keys can load independently:
+
+```powershell
+$env:BENCHMARK_PRODUCT_IDS='1,2,3,4,5'
+$env:BENCHMARK_PRODUCT_WEIGHTS='40,25,15,10,10'
+$env:BENCHMARK_DISTRIBUTION='weighted'
+locust -f locust_redis_multi.py --host http://127.0.0.1:8000
+```
+
+For uniform traffic:
+
+```powershell
+$env:BENCHMARK_DISTRIBUTION='uniform'
+```
+
+Best for:
+
+- multiple cache keys under load
+- confirming `product:1` does not block `product:2`
+- comparing weighted versus uniform hot key traffic
+- checking request names stay grouped as `GET /api/products/[id] multi-hot-key`
+
+### Scenario C - Realistic Customer Journey
+
+Use this when you want a customer-like read flow instead of a synthetic single endpoint test:
+
+```powershell
+$env:LOCUST_USER_USERNAME='user'
+$env:LOCUST_USER_PASSWORD='User123!'
+locust -f locust_user_journey.py --host http://127.0.0.1:8000
+```
+
+Default task mix:
+
+- 50% product list
+- 30% product detail
+- 15% search
+- 5% profile
+
+Expected cache behavior:
+
+- product list/detail/search can be affected by Redis
+- profile is not cached and should not be used to judge Redis speed
+
+### Cache Stampede Benchmark
+
+Use this to force simultaneous cold cache misses. Locust response time alone does not prove request coalescing; it only shows external latency. To prove coalescing, also check app-side DB loader/coalesced counters or the existing `tests/test_redis_cache.py` tests that assert one loader call for many same-key requests.
+
+Run FastAPI with one worker first:
+
+```powershell
+$env:REDIS_ENABLED='true'
+$env:REDIS_CACHE_TTL='300'
+python -m uvicorn app.main:app --host 127.0.0.1 --port 8000
+```
+
+Run the benchmark:
+
+```powershell
+$env:BENCHMARK_PRODUCT_IDS='1,2,3,4,5'
+$env:BENCHMARK_CLEAR_CACHE_ON_START='true'
+locust -f locust_cache_stampede.py --host http://127.0.0.1:8000
+```
+
+Or clear manually before starting Locust:
+
+```powershell
+docker exec -it mini-shop-redis redis-cli DEL product:1 product:2 product:3 product:4 product:5
+```
+
+Suggested burst settings:
+
+```text
+100 users, spawn rate 100, 30-60 seconds
+500 users, spawn rate 500, short run for cold burst testing
+```
+
+### Metrics To Read
+
+Cache performance metrics from Locust:
+
+- average response time
+- median response time
+- p95 and p99
+- requests per second
+- failure rate
+
+Cache effectiveness metrics:
+
+- `X-Cache=HIT` ratio
+- `X-Cache=MISS` ratio
+- `X-Cache=BYPASS` when Redis is disabled
+- `X-Cache=ERROR` when Redis is enabled but failing
+
+Cache stampede protection metrics need app-side visibility:
+
+- DB loader count
+- coalesced/joined request count
+- Redis SET count
+- DB query count per key
+
+Current production code does not expose those counters over HTTP. Safe options for a future lab are development-only logging, an in-memory benchmark counter guarded by an env flag, or test-only monkeypatch instrumentation. Do not conclude request coalescing works from latency alone.
+
+### Comparison Matrix
+
+Keep machine, dataset, Uvicorn worker count, Locust settings, and run duration the same between runs.
+
+| Users | Spawn rate | Duration | Mode |
+|------:|-----------:|----------|------|
+| 10 | 2 | 60s | Redis disabled |
+| 10 | 2 | 60s | Redis enabled, warm cache |
+| 10 | 2 | 60s | Redis enabled, cold cache |
+| 50 | 5 | 60s | Redis disabled |
+| 50 | 5 | 60s | Redis enabled, warm cache |
+| 50 | 5 | 60s | Redis enabled, cold cache |
+| 100 | 10 | 60s | Redis disabled |
+| 100 | 10 | 60s | Redis enabled, warm cache |
+| 100 | 10 | 60s | Redis enabled, forced simultaneous miss |
+| 250 | 20 | 60s | Optional higher local load |
+
+### Single Worker Versus Multiple Workers
+
+Request coalescing currently uses the process-local `_in_flight` map in `app/cache.py`.
+
+With one worker:
+
+```powershell
+python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --workers 1
+```
+
+Expected for `n` same-key cold requests: approximately one DB load per key inside that one process.
+
+With four workers:
+
+```powershell
+python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --workers 4
+```
+
+Expected for `n` same-key cold requests: up to one DB load per key per worker, because each worker has its own `_in_flight` dictionary. This limitation is expected until a future Redis distributed lock lab.
 ## API Overview
 
 Auth:

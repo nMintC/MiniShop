@@ -3,7 +3,7 @@
 import asyncio
 import json
 import logging
-from collections.abc import Callable, Awaitable
+from collections.abc import Callable, Coroutine
 from threading import Lock
 from typing import Any
 from urllib.parse import quote
@@ -57,7 +57,7 @@ def redis_ping() -> bool:
         return False
 
 
-async def load_with_request_coalescing(key: str, loader: Callable[[], Awaitable[Any]]) -> Any:
+async def load_with_request_coalescing(key: str, loader: Callable[[], Coroutine[Any, Any, Any]]) -> Any:
     # asyncio.Task represents the shared load currently running for this cache key.
     # Multiple requests can await the same Task, so only the first request performs
     # the DB read and Redis SET while the others reuse the same success or failure.
